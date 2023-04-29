@@ -30,25 +30,34 @@ Direction Ghost::getNextDir()
 		int pac_y = pac->GetY();
 		
 		if (pac_x == pos_x) {
-			if (pac_y < pos_y &&
-				std::find(allowed_dir.begin(), allowed_dir.end(), UP) != allowed_dir.end() &&
-				!check_barr_range(pac_x, pos_x, pac_y, pos_y))
-				return UP;
-			else if (pac_y > pos_y &&
-				std::find(allowed_dir.begin(), allowed_dir.end(), DOWN) != allowed_dir.end() &&
-				!check_barr_range(pos_x, pac_x, pos_y, pac_y))
-				return DOWN;
+			if (pac_y < pos_y && !check_barr_range(pac_x, pos_x, pac_y, pos_y))
+			{
+				if (is_prey && std::find(allowed_dir.begin(), allowed_dir.end(), DOWN) != allowed_dir.end())
+					return DOWN;
+				else if (!is_prey && std::find(allowed_dir.begin(), allowed_dir.end(), UP) != allowed_dir.end())
+					return UP;
+			}
+			else if (pac_y > pos_y && !check_barr_range(pos_x, pac_x, pos_y, pac_y)) {
+				if (is_prey && std::find(allowed_dir.begin(), allowed_dir.end(), UP) != allowed_dir.end())
+					return UP;
+				else if (!is_prey && std::find(allowed_dir.begin(), allowed_dir.end(), DOWN) != allowed_dir.end())
+					return DOWN;
+			}
 		}
-
 		if (pac_y == pos_y) {
-			if (pac_x < pos_x &&
-				std::find(allowed_dir.begin(), allowed_dir.end(), LEFT) != allowed_dir.end() &&
-				!check_barr_range(pac_x, pos_x, pac_y, pos_y))
-				return LEFT;
-			else if (pac_x > pos_x &&
-				std::find(allowed_dir.begin(), allowed_dir.end(), RIGHT) != allowed_dir.end() &&
-				!check_barr_range(pos_x, pac_x, pos_y, pac_y))
-				return RIGHT;
+			if (pac_x < pos_x && !check_barr_range(pac_x, pos_x, pac_y, pos_y)) 
+			{
+				if (is_prey && std::find(allowed_dir.begin(), allowed_dir.end(), RIGHT) != allowed_dir.end())
+					return RIGHT;
+				else if (!is_prey && std::find(allowed_dir.begin(), allowed_dir.end(), LEFT) != allowed_dir.end())
+					return LEFT;
+			}
+			else if (pac_x > pos_x && !check_barr_range(pos_x, pac_x, pos_y, pac_y)) {
+				if (is_prey && std::find(allowed_dir.begin(), allowed_dir.end(), LEFT) != allowed_dir.end())
+					return LEFT;
+				else if (!is_prey && std::find(allowed_dir.begin(), allowed_dir.end(), RIGHT) != allowed_dir.end())
+					return RIGHT;
+			}
 		}
 
 		if (pac_x - pos_x > 0 && std::find(allowed_dir.begin(), allowed_dir.end(), RIGHT) != allowed_dir.end()) 
@@ -93,6 +102,7 @@ Ghost::Ghost(int x, int y)
 void Ghost::prey_mod(bool state)
 {
 	is_prey = state;
+
 }
 
 void Ghost::changeDirAndMove(Direction dir)
@@ -132,7 +142,7 @@ void Ghost::die()
 
 void Ghost::toBeginning()
 {
-	setColor();
+	setColor(FOREGROUND_INTENSITY);
 	gotoxy(pos_x, pos_y);
 	if(symbol_behind != '@')
 		std::cout << symbol_behind;

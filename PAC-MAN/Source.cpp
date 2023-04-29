@@ -128,10 +128,10 @@ int main() {
 		case 13://enter
 			drawMap();
 			game_run = true;
-			lives = 3;
+			pacman->die();
 			for (i = 0; i < g_num; i++) g[i].toBeginning();
 			for (i = 0; i < g_num; i++) g_time[i] = clock() + (i + 1) * 4000;
-
+			lives = 3;
 			break;
 		}
 

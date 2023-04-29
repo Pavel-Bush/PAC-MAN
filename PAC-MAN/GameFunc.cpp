@@ -33,6 +33,7 @@ void drawMap()
 	setColor(FOREGROUND_INTENSITY);
 	for (int i = 0; i < 15; i++)
 		std::cout << "-------------------------";
+	food = 169;
 
 	//draw barriers
 	setColor(BACKGROUND_RED);
